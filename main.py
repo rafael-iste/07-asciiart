@@ -1,51 +1,64 @@
-#### Imports et définition des variables globales
+"""07-ascii-art
+Permet d'encoder une chaîne de caractères sous forme de liste
+de tuples (ASCII Art).
+"""
 
 # Mandatory for the recursive solution to work on large inputs
 import sys
+from typing import List, Tuple
+
 sys.setrecursionlimit(2000)
 
 
-#### Fonctions secondaires
-
-
-def artcode_i(s):
-    """retourne la liste de tuples encodant une chaîne de caractères passée en argument selon un algorithme itératif
+def artcode_i(s: str) -> List[Tuple[str, int]]:
+    """Encode une chaîne de caractères en liste de tuples selon
+    un algorithme itératif.
 
     Args:
-        s (str): la chaîne de caractères à encoder
+        s (str): La chaîne de caractères à encoder.
 
     Returns:
-        list: la liste des tuples (caractère, nombre d'occurences)
+        List[Tuple[str, int]]: Liste des tuples (caractère, nombre
+        d'occurrences consécutives)
     """
-    
-    # votre code ici
+    if not s:
+        return []
 
-    return [ ]
+    chars: List[str] = [s[0]]
+    counts: List[int] = [1]
+
+    for char in s[1:]:
+        if char == chars[-1]:
+            counts[-1] += 1
+        else:
+            chars.append(char)
+            counts.append(1)
+
+    return list(zip(chars, counts))
 
 
-def artcode_r(s):
-    """retourne la liste de tuples encodant une chaîne de caractères passée en argument selon un algorithme récursif
+def artcode_r(s: str) -> List[Tuple[str, int]]:
+    """Encode une chaîne de caractères en liste de tuples selon
+    un algorithme récursif.
 
     Args:
-        s (str): la chaîne de caractères à encoder
+        s (str): La chaîne de caractères à encoder.
 
     Returns:
-        list: la liste des tuples (caractère, nombre d'occurences)
+        List[Tuple[str, int]]: Liste des tuples (caractère, nombre
+        d'occurrences consécutives)
     """
-    
-    # votre code ici
+    if not s:
+        return []
 
-    # cas de base
-    # recherche nombre de caractères identiques au premier
-    # appel récursif
+    count: int = 1
+    while count < len(s) and s[count] == s[0]:
+        count += 1
 
-    return []
-    
+    return [(s[0], count)] + artcode_r(s[count:])
 
-#### Fonction principale
-
-
-def main():
+def main() -> None:
+    """Fonction principale"""
     print(artcode_i('MMMMaaacXolloMM'))
     print(artcode_r('MMMMaaacXolloMM'))
 
